@@ -203,16 +203,90 @@ catch
 //    Console.WriteLine($"{a} / {b} = {a / b}");
 //}
 
-//12
+////12
 
-void SetAge(int age)
+//try
+//{
+//    SetAge(25);
+//    SetAge(-5);
+//}
+//catch (ArgumentException ex)
+//{
+//    Console.WriteLine($"인수 오류: {ex.Message}");
+//}
+
+//void SetAge(int age)
+//{
+//    if (age < 0)
+//    {
+//        throw new ArgumentException("나이는 0 이상이어야 합니다.", nameof(age));
+//    }
+//    if (age > 150)
+//    {
+//        throw new ArgumentOutOfRangeException(nameof(age), "나이가 너무 큽니다.");
+//    }
+//    Console.WriteLine($"나이가 {age}로 설정되었습니다.");
+//}
+
+
+//13
+try
 {
-    if( age < 0)
+    ProcessData();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"최종 처리: {ex.Message}");
+}
+
+void ProcessData()
+{
+    try
     {
-        throw new ArgumentException("인수 오류: 나이는 0 이상이어야 합니다.", nameof(age));
+        int zero = 0;
+        int result = 10 / zero;
     }
-    if( age > 900)
+    catch (Exception ex)
     {
-        throw new ArgumentOutOfRangeException("dd");
+        Console.WriteLine($"로그: {ex.Message}");
+        throw;
+    }
+}
+
+//14
+try
+{
+    ProcessPositiveNumber(10);
+    ProcessPositiveNumber(-5);
+}
+catch (NegativeNumberException ex)
+{
+    Console.WriteLine($"오류: {ex.Message}");
+    Console.WriteLine($"입력된 숫자: {ex.Number}");
+}
+
+void ProcessPositiveNumber(int value)
+{
+    if (value < 0)
+    {
+        throw new NegativeNumberException(value);
+    }
+    Console.WriteLine($"처리 완료: {value}");
+}
+
+class NegativeNumberException : Exception
+{
+    public int Number { get; }
+
+    public NegativeNumberException() { }
+
+    public NegativeNumberException(string message) : base(message) { }
+
+    public NegativeNumberException(string message, Exception inner) : base(message, inner) { }
+
+    public NegativeNumberException(int number)
+        : base($"음수는 허용되지 않습니다: {number}")
+    {
+        Number = number;
     }
 }
